@@ -21,7 +21,7 @@ define docker::conf::user (
 
   if $ensure == 'absent' {
     exec { "docker-manage-group-user-${name}-remove":
-      path    => [ '/usr/sbin', /usr/bin', '/bin' ],
+      path    => [ '/usr/sbin', '/usr/bin', '/bin' ],
       command => "gpasswd -d ${name} ${docker::socket_group}",
       onlyif  => "grep ${docker::socket_group} /etc/group | grep ${name}",
       require => Group['docker_group'],
