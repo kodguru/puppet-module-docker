@@ -22,10 +22,11 @@ define docker::image (
   }
 
   if $ensure == 'present' {
-    exec { "docker_image_${name}_install":
-      path    => [ '/usr/sbin', '/usr/bin', '/bin' ],
-      command => "docker pull ${image_real}",
-      unless  => $image_cond,
+    exec { "docker_image_${name}_pull":
+      provider => 'shell',
+      path     => [ '/usr/sbin', '/usr/bin', '/bin' ],
+      command  => "docker pull ${image_real}",
+      unless   => $image_cond,
     }
   }
 }
