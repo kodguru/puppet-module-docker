@@ -15,7 +15,7 @@ define docker::image (
 
   if $tag != undef {
     $image_real = "${image}:${tag}"
-    $image_cond = "images=`docker images | grep ${image} | awk '{ print \$2 }'` && exist='false' && for image in \${images} ; do if [ \${image} == \"\${tag}\" ] ; then exist='true' ; fi ; done && test \${exist} == 'true'"
+    $image_cond = "tags=`docker images | grep ${image} | awk '{ print \$2 }'` && exist='false' && for tag in \${tags} ; do if [ \${tag} == \"${tag}\" ] ; then exist='true' ; fi ; done && test \${exist} == 'true'"
   } else {
     $image_real = $image
     $image_cond = "docker images | awk '{ print \$1 }' | grep ${image}"
