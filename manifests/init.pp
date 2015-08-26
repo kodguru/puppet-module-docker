@@ -82,11 +82,6 @@ class docker (
     forcelocal => true,
   }
 
-  exec { 'systemd_reload':
-    command     => '/usr/bin/systemctl daemon-reload',
-    refreshonly => true,
-  }
-
   service { 'docker_service':
     ensure   => running,
     name     => 'docker',
