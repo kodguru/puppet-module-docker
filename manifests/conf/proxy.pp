@@ -33,7 +33,7 @@ class docker::conf::proxy (
       content => template('docker/http-proxy.conf.erb'),
       owner   => 'root',
       group   => 'root',
-      mode    => '0744',
+      mode    => '0644',
       require => File['etc_docker_service_d_dir'],
       notify  => Exec['systemd_reload'],
     }
