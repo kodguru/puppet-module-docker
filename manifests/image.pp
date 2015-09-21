@@ -15,10 +15,10 @@ define docker::image (
 
   if $tag != undef {
     $image_real = "${image}:${tag}"
-    $image_cond = "tags=`docker images | grep ${image} | awk '{ print \$2 }'` && exist='false' && for tag in \${tags} ; do if [ \${tag} == \"${tag}\" ] ; then exist='true' ; fi ; done && test \${exist} == 'true'"
+    $image_cond = "tags=`docker images | awk '/${image}/ && match(\$1, /^${image}$/) { print \$2 }'` && exist='false' && for tag in \${tags} ; do if [ \${tag} == \"${tag}\" ] ; then exist='true' ; fi ; done && test \${exist} == 'true'"
   } else {
     $image_real = $image
-    $image_cond = "docker images | awk '{ print \$1 }' | grep ${image}"
+    $image_cond = "docker images | awk '/${image}/ && match(\$1, /^${image}$/) { print \$1 }'"
   }
 
   if $ensure == 'present' {
