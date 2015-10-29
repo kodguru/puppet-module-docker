@@ -6,6 +6,7 @@ class docker (
   $repo_url           = 'USE_DEFAULTS',
   $repo_key           = 'USE_DEFAULTS',
   $package_name       = 'USE_DEFAULTS',
+  $package_ensure     = 'present',
   $socket_group       = 'docker',
   $manage_group_users = undef,
   $images             = undef,
@@ -50,6 +51,8 @@ class docker (
   }
   validate_string($package_name_real)
 
+  validate_string($package_ensure)
+
   validate_string($socker_group)
 
   yumrepo { 'docker_yum_repo':
@@ -63,7 +66,7 @@ class docker (
   }
 
   package { 'docker_package':
-    ensure  => installed,
+    ensure  => $package_ensure,
     name    => $package_name_real,
     require => Yumrepo['docker_yum_repo'],
   }

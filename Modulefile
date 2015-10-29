@@ -1,5 +1,5 @@
 name 'juliengk-docker'
-version '0.1.5'
+version '0.1.6'
 source 'git://github.com/juliengk/puppet-module-docker.git'
 author 'juliengk'
 license 'Apache License, Version 2.0'

@@ -19,7 +19,22 @@ This module has been tested to work on the following systems.
 rpm_url
 -------
 
-- *Default*: 'https://get.docker.com/rpm/1.7.1/centos-7/RPMS/x86_64/docker-engine-1.7.1-1.el7.centos.x86_64.rpm'
+- *Default*: 'USE_DEFAULTS'
+
+repo_key
+--------
+
+- *Default*: 'USE_DEFAULTS'
+
+package_name
+------------
+
+- *Default*: 'USE_DEFAULTS'
+
+package_ensure
+--------------
+
+- *Default*: 'present'
 
 socket_group
 ------------
