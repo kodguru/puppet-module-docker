@@ -1,0 +1,39 @@
+{
+  "name": "juliengk-docker",
+  "version": "0.1.7",
+  "author": "juliengk",
+  "summary": "Manages docker",
+  "license": "Apache-2.0",
+  "source": "git://github.com/juliengk/puppet-module-docker.git",
+  "project_page": "https://github.com/juliengk/puppet-module-docker",
+  "issues_url": "https://github.com/juliengk/puppet-module-docker/issues",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": "3.x"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
+    }
+  ],
+  "dependencies": [
+    { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.5.1" },
+    { "name": "juliengk/stdlibplus", "version_requirement": ">= 0.1.0" },
+    { "name": "juliengk/env", "version_requirement": ">= 0.1.0" }
+  ]
+}
