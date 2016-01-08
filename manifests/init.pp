@@ -60,9 +60,9 @@ class docker (
     name     => 'dockerrepo',
     descr    => 'Docker Repository',
     baseurl  => $repo_url_real,
-    enabled  => 'True',
+    enabled  => 1,
     gpgkey   => $repo_key_real,
-    gpgcheck => 'True',
+    gpgcheck => 1,
   }
 
   package { 'docker_package':
