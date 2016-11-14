@@ -81,6 +81,20 @@ ensure
 
 ===
 
+# class docker::conf::daemon
+
+ensure
+------
+
+- *Default*: 'present'
+
+flags
+---
+
+- *Default*: 'undef'
+
+===
+
 # class docker::conf::proxy
 
 ensure
