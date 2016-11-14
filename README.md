@@ -53,6 +53,25 @@ images
 
 ===
 
+# define docker::image
+
+ensure
+------
+
+- *Default*: 'present'
+
+image
+-----
+
+- *Default*: $name
+
+tag
+---
+
+- *Default*: undef
+
+===
+
 # define docker::conf::user
 
 ensure
@@ -83,22 +102,3 @@ exceptions
 ----------
 
 - *Default*: 'undef'
-
-===
-
-# define docker::image
-
-ensure
-------
-
-- *Default*: 'present'
-
-image
------
-
-- *Default*: $name
-
-tag
----
-
-- *Default*: undef
