@@ -3,9 +3,16 @@
 # Configure dockerd
 #
 class docker::conf::daemon (
-  $ensure = 'present',
-  $flags  = undef,
+  $ensure      = 'present',
+  $daemon_name = 'USE_DEFAULTS',
+  $flags       = undef,
 ) {
+
+  if versioncmp($::docker_version, '1.12.0') < 0 {
+    $default_daemon_name = 'docker daemon'
+  } else {
+    $default_daemon_name = 'dockerd'
+  }
 
   validate_re($ensure, [ '^present$', '^absent$' ],
     "docker::conf::daemon::ensure is invalid and does not match the regex.")
@@ -13,6 +20,13 @@ class docker::conf::daemon (
   if $flags != undef {
     validate_hash($flags)
   }
+
+  if $daemon_name == 'USE_DEFAULTS' {
+    $daemon_name_real = $default_daemon_name
+  } else {
+    $daemon_name_real = $daemon_name
+  }
+  validate_string($daemon_name_real)
 
   if $ensure == 'present' {
     file { 'docker_daemon_conf':
