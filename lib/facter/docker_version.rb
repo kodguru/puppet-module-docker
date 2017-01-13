@@ -8,7 +8,7 @@ Facter.add('docker_version') do
     version = 'none'
 
     if File.file?(docker_bin)
-      version = `#{docker_bin} version -f '{{.Server.Version}}'`.strip
+      version = `#{docker_bin} version -f '{{.Client.Version}}' 2> /dev/null`.strip
     end
 
     version
