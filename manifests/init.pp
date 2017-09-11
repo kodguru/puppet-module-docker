@@ -16,9 +16,9 @@ class docker (
     'RedHat': {
       case $::operatingsystemmajrelease {
         '7': {
-          $default_repo_url     = 'https://yum.dockerproject.org/repo/main/centos/7'
-          $default_repo_key     = 'https://yum.dockerproject.org/gpg'
-          $default_package_name = 'docker-engine'
+          $default_repo_url     = 'https://download.docker.com/linux/centos/7/x86_64/stable'
+          $default_repo_key     = 'https://download.docker.com/linux/centos/gpg'
+          $default_package_name = 'docker-ce'
         }
         default: {
           fail("Docker supports RedHat like systems with major release of 7 and you have <${::operatingsystemmajrelease}>.")
