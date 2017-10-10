@@ -53,7 +53,7 @@ class docker (
 
   validate_string($package_ensure)
 
-  validate_string($socker_group)
+  validate_string($socket_group)
 
   yumrepo { 'docker_yum_repo':
 #    ensure   => present,
