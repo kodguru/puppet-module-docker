@@ -3,8 +3,11 @@
 # Manage Docker
 #
 class docker (
+  $repo_ensure        = 'present',
+  $repo_enabled       = 1,
   $repo_url           = 'USE_DEFAULTS',
   $repo_key           = 'USE_DEFAULTS',
+  $repo_gpgcheck      = 1,
   $package_name       = 'USE_DEFAULTS',
   $package_ensure     = 'present',
   $socket_group       = 'docker',
@@ -30,6 +33,14 @@ class docker (
     }
   }
 
+  validate_re($repo_ensure, [ '^present$', '^absent$' ],
+    'docker::repo_ensure is invalid and does not match the regex.')
+
+  if $repo_enabled != 0 or $repo_enabled != 1 {
+    fail('docker::repo_enabled is invalid. Must be either 0 or 1.')
+  }
+  validate_integer($repo_enabled)
+
   if $repo_url == 'USE_DEFAULTS' {
     $repo_url_real = $default_repo_url
   } else {
@@ -44,6 +55,11 @@ class docker (
   }
   validate_string($repo_key_real)
 
+  if $repo_gpgcheck != 0 or $repo_gpgcheck != 1 {
+    fail('docker::repo_gpgcheck is invalid. Must be either 0 or 1.')
+  }
+  validate_integer($repo_gpgcheck)
+
   if $package_name == 'USE_DEFAULTS' {
     $package_name_real = $default_package_name
   } else {
@@ -56,13 +72,13 @@ class docker (
   validate_string($socket_group)
 
   yumrepo { 'docker_yum_repo':
-#    ensure   => present,
+    ensure   => $repo_ensure,
     name     => 'dockerrepo',
     descr    => 'Docker Repository',
     baseurl  => $repo_url_real,
-    enabled  => 1,
+    enabled  => $repo_enabled,
     gpgkey   => $repo_key_real,
-    gpgcheck => 1,
+    gpgcheck => $repo_gpgcheck,
   }
 
   package { 'docker_package':
