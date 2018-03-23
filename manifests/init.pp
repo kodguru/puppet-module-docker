@@ -36,7 +36,7 @@ class docker (
   validate_re($repo_ensure, [ '^present$', '^absent$' ],
     'docker::repo_ensure is invalid and does not match the regex.')
 
-  if $repo_enabled != 0 or $repo_enabled != 1 {
+  if $repo_enabled != 0 and $repo_enabled != 1 {
     fail('docker::repo_enabled is invalid. Must be either 0 or 1.')
   }
   validate_integer($repo_enabled)
@@ -55,7 +55,7 @@ class docker (
   }
   validate_string($repo_key_real)
 
-  if $repo_gpgcheck != 0 or $repo_gpgcheck != 1 {
+  if $repo_gpgcheck != 0 and $repo_gpgcheck != 1 {
     fail('docker::repo_gpgcheck is invalid. Must be either 0 or 1.')
   }
   validate_integer($repo_gpgcheck)
