@@ -46,6 +46,11 @@ manage_group_users
 
 - *Default*: 'undef'
 
+manage_containerd
+-----------------
+
+- *Default*: false
+
 images
 ------
 
@@ -116,3 +121,12 @@ exceptions
 ----------
 
 - *Default*: 'undef'
+
+===
+
+# class docker::conf::slice
+
+systemd_slice
+-------------
+
+- *Default*: undef

@@ -11,6 +11,7 @@ class docker (
   $package_name       = 'USE_DEFAULTS',
   $package_ensure     = 'present',
   $socket_group       = 'docker',
+  $manage_containerd  = false,
   $manage_group_users = undef,
   $images             = undef,
 ) {
@@ -71,6 +72,13 @@ class docker (
 
   validate_string($socket_group)
 
+  if is_string($manage_containerd) {
+    $manage_containerd_real = str2bool($manage_containerd)
+  } else {
+    $manage_containerd_real = $manage_containerd
+  }
+  validate_bool($manage_containerd_real)
+
   yumrepo { 'docker_yum_repo':
     ensure   => $repo_ensure,
     name     => 'dockerrepo',
@@ -106,6 +114,16 @@ class docker (
     name     => 'docker',
     enable   => true,
     provider => 'systemd',
+  }
+
+  if $manage_containerd_real {
+    file { 'etc_containerd_service_d_dir':
+      ensure => directory,
+      path   => '/etc/systemd/system/containerd.service.d',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+    }
   }
 
   if $manage_group_users != undef {
