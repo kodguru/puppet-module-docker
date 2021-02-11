@@ -3,29 +3,32 @@
 # Manage Docker
 #
 class docker (
-  $repo_ensure        = 'present',
-  $repo_enabled       = 1,
-  $repo_url           = 'USE_DEFAULTS',
-  $repo_key           = 'USE_DEFAULTS',
-  $repo_gpgcheck      = 1,
-  $package_name       = 'USE_DEFAULTS',
-  $package_ensure     = 'present',
-  $socket_group       = 'docker',
-  $manage_containerd  = false,
-  $manage_group_users = undef,
-  $images             = undef,
+  $repo_ensure            = 'present',
+  $repo_enabled           = 1,
+  $repo_url               = 'USE_DEFAULTS',
+  $repo_key               = 'USE_DEFAULTS',
+  $repo_gpgcheck          = 1,
+  $package_name           = 'USE_DEFAULTS',
+  $package_cli_name       = 'USE_DEFAULTS',
+  $package_ensure         = 'present',
+  $socket_group           = 'docker',
+  $manage_cli_package     = false,
+  $manage_containerd      = false,
+  $manage_group_users     = undef,
+  $images                 = undef,
 ) {
 
   case $::osfamily {
     'RedHat': {
       case $::operatingsystemmajrelease {
-        '7': {
-          $default_repo_url     = 'https://download.docker.com/linux/centos/7/x86_64/stable'
-          $default_repo_key     = 'https://download.docker.com/linux/centos/gpg'
-          $default_package_name = 'docker-ce'
+        '7', '8': {
+          $default_repo_url         = 'https://download.docker.com/linux/centos/$::operatingsystemmajrelease/x86_64/stable'
+          $default_repo_key         = 'https://download.docker.com/linux/centos/gpg'
+          $default_package_name     = 'docker-ce'
+          $default_cli_package_name = 'docker-ce-cli'
         }
         default: {
-          fail("Docker supports RedHat like systems with major release of 7 and you have <${::operatingsystemmajrelease}>.")
+          fail("Docker supports RedHat like systems with major release of 7 or 8 and you have <${::operatingsystemmajrelease}>.")
         }
       }
     }
@@ -62,11 +65,14 @@ class docker (
   validate_integer($repo_gpgcheck)
 
   if $package_name == 'USE_DEFAULTS' {
-    $package_name_real = $default_package_name
+    $package_name_real     = $default_package_name
+    $package_cli_name_real = $default_cli_package_name
   } else {
-    $package_name_real = $package_name
+    $package_name_real     = $package_name
+    $package_cli_name_real = $package_cli_name
   }
   validate_string($package_name_real)
+  validate_string($package_cli_name_real)
 
   validate_string($package_ensure)
 
@@ -78,6 +84,12 @@ class docker (
     $manage_containerd_real = $manage_containerd
   }
   validate_bool($manage_containerd_real)
+
+ if is_string($manage_cli_package) {
+    $manage_cli_package_real = str2bool($manage_cli_package)
+  } else {
+    $manage_cli_package_real = $manage_cli_package
+  }
 
   yumrepo { 'docker_yum_repo':
     ensure   => $repo_ensure,
@@ -93,6 +105,14 @@ class docker (
     ensure  => $package_ensure,
     name    => $package_name_real,
     require => Yumrepo['docker_yum_repo'],
+  }
+
+  if $manage_cli_package_real {
+    package { 'docker_cli_package':
+      ensure  => $package_ensure,
+      name    => $package_cli_name_real,
+      require => Yumrepo['docker_yum_repo'],
+    }
   }
 
   file { 'etc_docker_service_d_dir':
