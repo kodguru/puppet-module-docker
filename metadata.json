@@ -1,6 +1,6 @@
 {
   "name": "juliengk-docker",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "author": "juliengk",
   "summary": "Manages docker",
   "license": "Apache-2.0",
